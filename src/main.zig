@@ -13,6 +13,9 @@ pub fn main() !void {
         buffer[i] = 0;
     }
 
-    _ = try Request.read_request(connection, buffer[0..buffer.len]);
-    try stdout.print("{s}\n", .{buffer});
+    try Request.read_request(connection, buffer[0..buffer.len]);
+    const request = Request.parse_request(buffer[0..buffer.len]);
+    try stdout.print("Method: {any}\n", .{request.method});
+    try stdout.print("Version: {s}\n", .{request.version});
+    try stdout.print("URI: {s}\n", .{request.uri});
 }
